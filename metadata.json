@@ -1,0 +1,8 @@
+{
+  "name": "FitCore Gym Management",
+  "description": "A comprehensive gym management system with real-time sync between Admin and Member apps, featuring QR attendance, workout/diet tracking, and payment management.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}

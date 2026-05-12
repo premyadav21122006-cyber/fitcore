@@ -1,0 +1,149 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Base user profile for authentication and role management.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "trainer", "member"] },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Gym member specific data.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Link to User entity" },
+        "name": { "type": "string" },
+        "age": { "type": "integer" },
+        "weight": { "type": "number" },
+        "height": { "type": "number" },
+        "membershipType": { "type": "string" },
+        "joinDate": { "type": "string", "format": "date-time" },
+        "expiryDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["active", "expired", "inactive"] },
+        "qrCode": { "type": "string" }
+      },
+      "required": ["userId", "name", "membershipType", "joinDate", "expiryDate", "status"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Daily attendance logs.",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "method": { "type": "string", "enum": ["QR", "manual"] }
+      },
+      "required": ["memberId", "timestamp"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Membership payment records.",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "amount": { "type": "number" },
+        "date": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["paid", "pending", "failed"] },
+        "planId": { "type": "string" }
+      },
+      "required": ["memberId", "amount", "date", "status"]
+    },
+    "WorkoutPlan": {
+      "title": "Workout Plan",
+      "description": "Assigned workout schedule.",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "assignedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "exercises": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "sets": { "type": "integer" },
+              "reps": { "type": "string" },
+              "notes": { "type": "string" }
+            }
+          }
+        }
+      },
+      "required": ["memberId", "assignedBy", "exercises"]
+    },
+    "DietPlan": {
+      "title": "Diet Plan",
+      "description": "Assigned nutrition plan.",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "assignedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "meals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time": { "type": "string" },
+              "description": { "type": "string" },
+              "calories": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "required": ["memberId", "assignedBy", "meals"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System or admin notifications.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "type": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["userId", "title", "body", "createdAt", "read"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles."
+    },
+    "members/{memberId}": {
+      "schema": "Member",
+      "description": "Gym member details."
+    },
+    "attendance/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Attendance history."
+    },
+    "payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Payment records."
+    },
+    "workout_plans/{planId}": {
+      "schema": "WorkoutPlan",
+      "description": "Workout routines."
+    },
+    "diet_plans/{planId}": {
+      "schema": "DietPlan",
+      "description": "Nutrition routines."
+    },
+    "notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User notifications."
+    }
+  }
+}
